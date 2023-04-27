@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<style>
+	p.done {
+		text-decoration: line-through;
+	}
+	</style>
+	<script>
+		let items = [];
+
+		function addItem(text) {
+			let item = {
+				'id': Date.now(),
+				'done': false,
+				'text': text
+			};
+
+			items.push(item);
+			renderItem(item);
+			console.log(items);
+
+		}
+
+		function doneClicked(event) {
+			let itemId = event.target.parentNode.id;
+			const index = items.findIndex(item => item.id === Number(itemId));
+			console.log(items[index]);
+			items[index].done = !items[index].done;
+			renderItem(items[index]);
+		}
+
+		function renderItem(item) {
+		    let existing = document.getElementById(item.id)
+			let node = document.createElement("li");
+			node.setAttribute('id', item.id);
+			let itemDone = (item.done) ? "<p class='done'>" : "<p>";
+			node.innerHTML = itemDone + item.text + "</p>" + "<input type='button' value='remove' onclick='removeClicked(event)'>" + "<input type='button' value='done' onclick='doneClicked(event)'>";
+			let listItems = document.getElementById("items");
+
+			if (existing) {
+				listItems.replaceChild(node, existing)
+			} else {
+			listItems.append(node);
+		}
+	}
+		
+		function submitData() {
+			var x = document.getElementById("data").value;
+			document.getElementById("data").value = "";
+			addItem(x);
+		}
+
+		function removeClicked(e) {
+			let item = document.getElementById(e.target.parentNode.id);
+			items = items.filter((i) => i.id != item.id);
+			item.remove();
+		}
+
+
+
+
+	</script>
+</head>
+<body>
+
+	<ul id="items">
+	</ul>
+
+	<form id="frm1">
+		<input type="text" id="data" name="data">
+		<input type="button" onclick="submitData()" value="Submit">
+	</form>
+
+</body>
+</html>
